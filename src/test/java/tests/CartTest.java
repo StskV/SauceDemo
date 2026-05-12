@@ -22,11 +22,11 @@ public class CartTest extends BaseTest {
         loginPage.login("standard_user", "secret_sauce");
         productsPage.addToCart("Sauce Labs Bolt T-Shirt");
         productsPage.clickCart();
-        assertEquals(cartPage.getProductsCount(), 1, "Adding 1 product test failed");
+        softAssert.assertEquals(cartPage.getProductsCount(), 1, "Adding 1 product test failed");
         cartPage.clickContinueShopping();
         productsPage.addToCart("Sauce Labs Onesie");
         productsPage.clickCart();
-        assertEquals(cartPage.getProductsCount(), 2, "Adding 2 products test failed");
+        softAssert.assertEquals(cartPage.getProductsCount(), 2, "Adding 2 products test failed");
         softAssert.assertAll();
     }
 
