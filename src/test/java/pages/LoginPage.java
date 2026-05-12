@@ -3,7 +3,7 @@ package pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class LoginPage extends BasePage{
+public class LoginPage extends BasePage {
 
     private final By USERNAME_FIELD = By.id("user-name");
     private final By PASSWORD_FIELD = By.id("password");
@@ -21,12 +21,6 @@ public class LoginPage extends BasePage{
     public void login(String user, String password) {
         driver.findElement(USERNAME_FIELD).sendKeys(user);
         driver.findElement(PASSWORD_FIELD).sendKeys(password);
-        driver.findElement(LOGIN_BUTTON).click();
-    }
-
-    public void successfulLogin() {
-        driver.findElement(USERNAME_FIELD).sendKeys("standard_user");
-        driver.findElement(PASSWORD_FIELD).sendKeys("secret_sauce");
         driver.findElement(LOGIN_BUTTON).click();
     }
 

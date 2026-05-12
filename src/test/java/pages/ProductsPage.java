@@ -4,7 +4,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class ProductsPage extends BasePage{
+public class ProductsPage extends BasePage {
 
     private final By TITLE = By.cssSelector("[data-test = title]");
     private final By CART = By.cssSelector("[data-test = shopping-cart-link]");
@@ -37,11 +37,11 @@ public class ProductsPage extends BasePage{
         driver.findElement(CART).click();
     }
 
-    public boolean isCartBadgeDisplayed(){
+    public boolean isCartBadgeDisplayed() {
         return !driver.findElements(CART_BADGE).isEmpty();
     }
 
-    public String getCartBadgeCount(){
+    public String getCartBadgeCount() {
         return driver.findElement(CART_BADGE).getText();
     }
 
