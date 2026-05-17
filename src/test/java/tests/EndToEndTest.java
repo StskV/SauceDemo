@@ -8,7 +8,12 @@ public class EndToEndTest extends BaseTest {
     private final String PRODUCT_NAME = "Sauce Labs Backpack";
     private final String EXPECTED_MESSAGE = "Thank you for your order!";
 
-    @Test
+    @Test(
+            description = "End to end проверка успешной покупки",
+            testName = "Успешная покупка",
+            groups = "smoke",
+            priority = 1
+    )
     public void checkSuccessfulFullPurchaseFlow() {
         SoftAssert softAssert = new SoftAssert();
         loginPage.open();
