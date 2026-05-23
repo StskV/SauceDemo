@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.*;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
@@ -12,10 +13,15 @@ public class ProductsTest extends BaseTest {
             testName = "Добавление товара в корзину со страницы Products",
             groups = "smoke"
     )
+    @Owner("Satsiuk Viktoriya")
+    @Epic("Sauce Demo 1")
+    @Feature("Products")
+    @Story("Adding products")
+    @Severity(SeverityLevel.CRITICAL)
     public void checkAddProductFromProductsPage() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
-        productsPage.addToCart("Sauce Labs Backpack");
+        productsPage.addToCart("Sauce Labs Backpack1");
         assertEquals(productsPage.getCartBadgeCount(), "1", "Add product to cart test failed");
     }
 
@@ -24,6 +30,11 @@ public class ProductsTest extends BaseTest {
             testName = "Удаление товаров из корзины со страницы Products",
             groups = "smoke"
     )
+    @Owner("Satsiuk Viktoriya")
+    @Epic("Sauce Demo 1")
+    @Feature("Products")
+    @Story("Remove products")
+    @Severity(SeverityLevel.CRITICAL)
     public void checkRemoveProductFromProductsPage() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");

@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -17,14 +18,17 @@ public class CartPage extends BasePage {
         super(driver);
     }
 
+    @Step("Переход на страницу Checkout: Your Information")
     public void clickCheckout() {
         driver.findElement(CHECKOUT_BUTTON).click();
     }
 
+    @Step("Переход на страницу Products")
     public void clickContinueShopping() {
         driver.findElement(CONTINUE_SHOPPING_BUTTON).click();
     }
 
+    @Step("Удаление продукта '{product}' из корзины")
     public void removeProduct(String product) {
         driver.findElement(By.xpath(String.format(REMOVE_BUTTON_PATTERN, product))).click();
     }

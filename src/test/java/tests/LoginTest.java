@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
@@ -14,6 +15,17 @@ public class LoginTest extends BaseTest {
             invocationCount = 1,
             threadPoolSize = 1
     )
+
+    @Owner("Satsiuk Viktoriya")
+    @Epic("Sauce Demo 1")
+    @Feature("Login")
+    @Story("Login with positive credentials")
+    @Description("Проверка логина с позитивными кредами")
+    @Severity(SeverityLevel.CRITICAL)
+    @Flaky
+    @Link(name = "Аналитика", url = "https://www.saucedemo.com/")
+    @TmsLink("SD-T01")
+    @Issue("BUG-01")
     public void checkLoginWithPositiveCred() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
@@ -37,6 +49,11 @@ public class LoginTest extends BaseTest {
             testName = "Логин с негативными кредами",
             groups = "regression"
     )
+    @Owner("Satsiuk Viktoriya")
+    @Epic("Sauce Demo 1")
+    @Feature("Login")
+    @Story("Login with negative credentials")
+    @Severity(SeverityLevel.NORMAL)
     public void checkLoginWithNegativeCredentials(String user, String password, String errorMessage) {
         loginPage.open();
         loginPage.login(user, password);
