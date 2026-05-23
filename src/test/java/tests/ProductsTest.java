@@ -21,7 +21,7 @@ public class ProductsTest extends BaseTest {
     public void checkAddProductFromProductsPage() {
         loginPage.open();
         loginPage.login("standard_user", "secret_sauce");
-        productsPage.addToCart("Sauce Labs Backpack1");
+        productsPage.addToCart("Sauce Labs Backpack");
         assertEquals(productsPage.getCartBadgeCount(), "1", "Add product to cart test failed");
     }
 
