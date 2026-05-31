@@ -5,12 +5,9 @@ import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 import utils.AllureUtils;
-
 import java.util.concurrent.TimeUnit;
 
-
 public class TestListener implements ITestListener {
-
     @Override
     public void onTestStart(ITestResult iTestResult) {
         System.out.printf("======================================== STARTING TEST %s ========================================%n", iTestResult.getName());
@@ -26,8 +23,10 @@ public class TestListener implements ITestListener {
     public void onTestFailure(ITestResult iTestResult) {
         System.out.printf("======================================== FAILED TEST %s Duration: %ss ========================================%n", iTestResult.getName(),
                 getExecutionTime(iTestResult));
-        WebDriver driver = (WebDriver) iTestResult.getTestContext().getAttribute("driver");
-        AllureUtils.takeScreenshot(driver);
+        Object driverAttribute = iTestResult.getTestContext().getAttribute("driver");
+        if (driverAttribute instanceof WebDriver) {
+            AllureUtils.takeScreenshot((WebDriver) driverAttribute);
+        }
     }
 
     @Override

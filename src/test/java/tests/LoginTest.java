@@ -1,12 +1,10 @@
 package tests;
 
 import io.qameta.allure.*;
-import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.LoginPage;
 import pages.ProductsPage;
-
 import static org.testng.Assert.assertEquals;
 
 public class LoginTest extends BaseTest {
@@ -18,6 +16,16 @@ public class LoginTest extends BaseTest {
             invocationCount = 1,
             threadPoolSize = 1
     )
+    @Owner("Satsiuk Viktoriya")
+    @Epic("Sauce Demo 1")
+    @Feature("Login")
+    @Story("Login with positive credentials")
+    @Description("Проверка логина с позитивными кредами")
+    @Severity(SeverityLevel.CRITICAL)
+    @Flaky
+    @Link(name = "Аналитика", url = "https://www.saucedemo.com/")
+    @TmsLink("SD-T01")
+    @Issue("BUG-01")
     public void checkLoginWithPositiveCred() {
         ProductsPage productsPage = loginStep.loginAsStandardUser();
         assertEquals(productsPage.getTitle(),
@@ -36,23 +44,16 @@ public class LoginTest extends BaseTest {
     }
 
     @Test(
-            description = "Проверка логина с позитивными кредами",
-            testName = "Логин с позитивным паролем",
-            groups = "smoke",
-            invocationCount = 1,
-            threadPoolSize = 1
+            dataProvider = "Параметризированный тест для негативного логина",
+            description = "Проверка логина с негативными кредами",
+            testName = "Логин с негативными кредами",
+            groups = "regression"
     )
-
     @Owner("Satsiuk Viktoriya")
     @Epic("Sauce Demo 1")
     @Feature("Login")
-    @Story("Login with positive credentials")
-    @Description("Проверка логина с позитивными кредами")
-    @Severity(SeverityLevel.CRITICAL)
-    @Flaky
-    @Link(name = "Аналитика", url = "https://www.saucedemo.com/")
-    @TmsLink("SD-T01")
-    @Issue("BUG-01")
+    @Story("Login with negative credentials")
+    @Severity(SeverityLevel.NORMAL)
     public void checkLoginWithNegativeCredentials(
             String user,
             String password,

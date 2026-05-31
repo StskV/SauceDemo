@@ -1,18 +1,20 @@
 package tests;
 
+import io.qameta.allure.testng.AllureTestNg;
+import listeners.TestListener;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.ITestContext;
 import org.testng.annotations.*;
 import steps.CartStep;
 import steps.LoginStep;
 import steps.PurchaseStep;
-
 import java.util.HashMap;
 
-@Listeners(TestListener.class)
+@Listeners({AllureTestNg.class, TestListener.class})
 public class BaseTest {
     protected WebDriver driver;
     protected LoginStep loginStep;
@@ -24,7 +26,7 @@ public class BaseTest {
             alwaysRun = true,
             description = "Настройка драйвера"
     )
-    public void setUp(@Optional("chrome") String browser) {
+    public void setUp(@Optional("chrome") String browser, ITestContext context) {
         if (browser.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
             HashMap<String, Object> chromePrefs = new HashMap<>();
@@ -42,6 +44,10 @@ public class BaseTest {
         } else if (browser.equalsIgnoreCase("edge")) {
             driver = new EdgeDriver();
         }
+
+        // Сохраняем драйвер в контекст TestNG, чтобы TestListener мог его безопасно забрать
+        context.setAttribute("driver", driver);
+
         loginStep = new LoginStep(driver);
         cartStep = new CartStep(driver);
         purchaseStep = new PurchaseStep(driver);
