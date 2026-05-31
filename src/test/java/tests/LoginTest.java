@@ -2,6 +2,8 @@ package tests;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import pages.LoginPage;
+import pages.ProductsPage;
 
 import static org.testng.Assert.assertEquals;
 
@@ -15,11 +17,12 @@ public class LoginTest extends BaseTest {
             threadPoolSize = 1
     )
     public void checkLoginWithPositiveCred() {
-        loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
+
+        ProductsPage productsPage = loginStep.loginAsStandardUser();
         assertEquals(productsPage.getTitle(),
                 "Products",
-                "Login failed");
+                "Login failed"
+        );
     }
 
     @DataProvider(name = "Параметризированный тест для негативного логина")
@@ -37,11 +40,16 @@ public class LoginTest extends BaseTest {
             testName = "Логин с негативными кредами",
             groups = "regression"
     )
-    public void checkLoginWithNegativeCredentials(String user, String password, String errorMessage) {
-        loginPage.open();
-        loginPage.login(user, password);
-        assertEquals(loginPage.getErrorMessage(),
-                errorMessage,
-                "Check login with negative creds failed");
+    public void checkLoginWithNegativeCredentials(
+            String user,
+            String password,
+            String errorMessage
+    )
+    {
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open()
+                .loginWithInvalidCreds(user, password);
+        assertEquals(loginPage.getErrorMessage(), errorMessage, "Check login with negative creds failed"
+        );
     }
 }
