@@ -1,6 +1,7 @@
 package pages;
 
 import dto.Customer;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -28,10 +29,11 @@ public class CheckoutPage extends BasePage {
 
     @Override
     public CheckoutPage isPageOpened() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(CONTINUE_BUTTON));
+        wait.until(ExpectedConditions.urlContains("checkout"));
         return this;
     }
 
+    @Step("Заполнение формы 'Checkout: Your Information' именем '{customer.firstName}', фамилией '{customer.lastName}' и zip кодом '{customer.zipCode}'")
     public CheckoutPage fillYourInformation(Customer customer) {
         type(FIRST_NAME_FIELD, customer.getFirstName());
         type(LAST_NAME_FIELD, customer.getLastName());
@@ -39,11 +41,13 @@ public class CheckoutPage extends BasePage {
         return this;
     }
 
+    @Step("Переход на страницу 'Checkout: Overview'")
     public CheckoutPage clickContinue() {
         click(CONTINUE_BUTTON);
         return this;
     }
 
+    @Step("Переход на страницу Checkout: Complete!")
     public CheckoutPage clickFinish() {
         click(FINISH_BUTTON);
         return this;
@@ -51,6 +55,10 @@ public class CheckoutPage extends BasePage {
 
     public String getProductName() {
         return waitVisible(PRODUCT_NAME).getText();
+    }
+
+    public String getProductPrice() {
+        return waitVisible(PRODUCT_PRICE).getText();
     }
 
     public String getSuccessOrderMessage() {

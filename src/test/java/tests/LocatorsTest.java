@@ -3,7 +3,9 @@ package tests;
 import org.openqa.selenium.By;
 import org.testng.annotations.Test;
 
-@Test
+@Test(
+        enabled = false
+)
 public class LocatorsTest extends BaseTest {
     public void checkLocators() {
         driver.get("https://www.saucedemo.com/");

@@ -1,5 +1,7 @@
 package tests;
 
+import io.qameta.allure.*;
+import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import pages.LoginPage;
@@ -17,7 +19,6 @@ public class LoginTest extends BaseTest {
             threadPoolSize = 1
     )
     public void checkLoginWithPositiveCred() {
-
         ProductsPage productsPage = loginStep.loginAsStandardUser();
         assertEquals(productsPage.getTitle(),
                 "Products",
@@ -35,21 +36,34 @@ public class LoginTest extends BaseTest {
     }
 
     @Test(
-            dataProvider = "Параметризированный тест для негативного логина",
-            description = "Проверка логина с негативными кредами",
-            testName = "Логин с негативными кредами",
-            groups = "regression"
+            description = "Проверка логина с позитивными кредами",
+            testName = "Логин с позитивным паролем",
+            groups = "smoke",
+            invocationCount = 1,
+            threadPoolSize = 1
     )
+
+    @Owner("Satsiuk Viktoriya")
+    @Epic("Sauce Demo 1")
+    @Feature("Login")
+    @Story("Login with positive credentials")
+    @Description("Проверка логина с позитивными кредами")
+    @Severity(SeverityLevel.CRITICAL)
+    @Flaky
+    @Link(name = "Аналитика", url = "https://www.saucedemo.com/")
+    @TmsLink("SD-T01")
+    @Issue("BUG-01")
     public void checkLoginWithNegativeCredentials(
             String user,
             String password,
             String errorMessage
-    )
-    {
+    ) {
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open()
                 .loginWithInvalidCreds(user, password);
-        assertEquals(loginPage.getErrorMessage(), errorMessage, "Check login with negative creds failed"
+        assertEquals(loginPage.getErrorMessage(),
+                errorMessage,
+                "Check login with negative creds failed"
         );
     }
 }

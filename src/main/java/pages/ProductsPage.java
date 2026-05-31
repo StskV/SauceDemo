@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -35,16 +36,19 @@ public class ProductsPage extends BasePage {
         return By.xpath(String.format(REMOVE_FROM_CART_PATTERN, product));
     }
 
+    @Step("Добавление в корзину товара с именем: '{product}'")
     public ProductsPage addToCart(String product) {
         click(addToCartButton(product));
         return this;
     }
 
+    @Step("Удаление из корзины товара с именем '{product}'")
     public ProductsPage removeFromCart(String product) {
         click(removeButton(product));
         return this;
     }
 
+    @Step("Переход на страницу корзины")
     public CartPage clickCart() {
         click(CART);
         return new CartPage(driver).isPageOpened();

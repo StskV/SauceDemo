@@ -1,6 +1,7 @@
 package tests;
 
 import dto.Customer;
+import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.CheckoutPage;
@@ -16,6 +17,11 @@ public class EndToEndTest extends BaseTest {
             groups = "smoke",
             priority = 1
     )
+    @Owner("Satsiuk Viktoriya")
+    @Epic("Sauce Demo 1")
+    @Feature("Order Checkout")
+    @Story("End-to-End purchase flow")
+    @Severity(SeverityLevel.CRITICAL)
     public void checkSuccessfulFullPurchaseFlow() {
         SoftAssert softAssert = new SoftAssert();
         Customer customer = Customer.builder()

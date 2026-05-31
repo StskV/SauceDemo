@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -14,6 +15,7 @@ public class LoginPage extends BasePage {
         super(driver);
     }
 
+    @Step("Открытие страницы LoginPage")
     @Override
     public LoginPage open() {
         driver.get(BASE_URL);
@@ -32,11 +34,13 @@ public class LoginPage extends BasePage {
         click(LOGIN_BUTTON);
     }
 
+    @Step("Вход в систему с валидными кредами: логин '{user}', пароль '{password}'")
     public ProductsPage loginWithValidCreds(String user, String password) {
         enterCredentials(user, password);
         return new ProductsPage(driver).isPageOpened();
     }
 
+    @Step("Вход в систему с невалидными кредами: логин '{user}', пароль '{pass}'")
     public LoginPage loginWithInvalidCreds(String user, String pass) {
         enterCredentials(user, pass);
         return this;

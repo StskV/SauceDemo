@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import pages.ProductsPage;
 
@@ -13,6 +14,11 @@ public class ProductsTest extends BaseTest {
             testName = "Добавление товара в корзину со страницы Products",
             groups = "smoke"
     )
+    @Owner("Satsiuk Viktoriya")
+    @Epic("Sauce Demo 1")
+    @Feature("Products")
+    @Story("Adding products")
+    @Severity(SeverityLevel.CRITICAL)
     public void checkAddProductFromProductsPage() {
         ProductsPage productsPage = loginStep.loginAsStandardUser()
                 .addToCart("Sauce Labs Backpack");
@@ -28,6 +34,11 @@ public class ProductsTest extends BaseTest {
             testName = "Удаление товаров из корзины со страницы Products",
             groups = "smoke"
     )
+    @Owner("Satsiuk Viktoriya")
+    @Epic("Sauce Demo 1")
+    @Feature("Products")
+    @Story("Remove products")
+    @Severity(SeverityLevel.CRITICAL)
     public void checkRemoveProductFromProductsPage() {
         ProductsPage productsPage = loginStep.loginAsStandardUser()
                 .addToCart("Sauce Labs Bike Light")
