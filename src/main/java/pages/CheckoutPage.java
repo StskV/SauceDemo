@@ -1,8 +1,10 @@
 package pages;
 
+import dto.Customer;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class CheckoutPage extends BasePage {
 
@@ -19,32 +21,47 @@ public class CheckoutPage extends BasePage {
         super(driver);
     }
 
-    @Step("Заполнение формы 'Checkout: Your Information'  именем '{firstName}', фамилией '{lastName}' и zip кодом '{zip}'")
-    public void fillYourInformation(String firstName, String lastName, String zip) {
-        driver.findElement(FIRST_NAME_FIELD).sendKeys(firstName);
-        driver.findElement(LAST_NAME_FIELD).sendKeys(lastName);
-        driver.findElement(ZIP_FIELD).sendKeys(zip);
+    @Override
+    public CheckoutPage open() {
+        driver.get(BASE_URL + "checkout-step-one.html");
+        return isPageOpened();
     }
 
-    @Step("Переход на страницу 'Checkout: Overview")
-    public void clickContinue() {
-        driver.findElement(CONTINUE_BUTTON).click();
+    @Override
+    public CheckoutPage isPageOpened() {
+        wait.until(ExpectedConditions.urlContains("checkout"));
+        return this;
+    }
+
+    @Step("Заполнение формы 'Checkout: Your Information' именем '{customer.firstName}', фамилией '{customer.lastName}' и zip кодом '{customer.zipCode}'")
+    public CheckoutPage fillYourInformation(Customer customer) {
+        type(FIRST_NAME_FIELD, customer.getFirstName());
+        type(LAST_NAME_FIELD, customer.getLastName());
+        type(ZIP_FIELD, customer.getZipCode());
+        return this;
+    }
+
+    @Step("Переход на страницу 'Checkout: Overview'")
+    public CheckoutPage clickContinue() {
+        click(CONTINUE_BUTTON);
+        return this;
     }
 
     @Step("Переход на страницу Checkout: Complete!")
-    public void clickFinish() {
-        driver.findElement(FINISH_BUTTON).click();
+    public CheckoutPage clickFinish() {
+        click(FINISH_BUTTON);
+        return this;
     }
 
     public String getProductName() {
-        return driver.findElement(PRODUCT_NAME).getText();
+        return waitVisible(PRODUCT_NAME).getText();
     }
 
     public String getProductPrice() {
-        return driver.findElement(PRODUCT_PRICE).getText();
+        return waitVisible(PRODUCT_PRICE).getText();
     }
 
     public String getSuccessOrderMessage() {
-        return driver.findElement(SUCCESS_ORDER_MESSAGE).getText();
+        return waitVisible(SUCCESS_ORDER_MESSAGE).getText();
     }
 }

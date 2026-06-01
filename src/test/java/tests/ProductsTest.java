@@ -2,6 +2,7 @@ package tests;
 
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
+import pages.ProductsPage;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -19,10 +20,13 @@ public class ProductsTest extends BaseTest {
     @Story("Adding products")
     @Severity(SeverityLevel.CRITICAL)
     public void checkAddProductFromProductsPage() {
-        loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
-        productsPage.addToCart("Sauce Labs Backpack");
-        assertEquals(productsPage.getCartBadgeCount(), "1", "Add product to cart test failed");
+        ProductsPage productsPage = loginStep.loginAsStandardUser()
+                .addToCart("Sauce Labs Backpack");
+        assertEquals(
+                productsPage.getCartBadgeCount(),
+                "1",
+                "Add product to cart test failed"
+        );
     }
 
     @Test(
@@ -36,10 +40,12 @@ public class ProductsTest extends BaseTest {
     @Story("Remove products")
     @Severity(SeverityLevel.CRITICAL)
     public void checkRemoveProductFromProductsPage() {
-        loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
-        productsPage.addToCart("Sauce Labs Bike Light");
-        productsPage.removeFromCart("Sauce Labs Bike Light");
-        assertFalse(productsPage.isCartBadgeDisplayed(), "Remove product from cart test failed");
+        ProductsPage productsPage = loginStep.loginAsStandardUser()
+                .addToCart("Sauce Labs Bike Light")
+                .removeFromCart("Sauce Labs Bike Light");
+        assertFalse(
+                productsPage.isCartBadgeDisplayed(),
+                "Remove product from cart test failed"
+        );
     }
 }

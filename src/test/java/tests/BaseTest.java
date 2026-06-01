@@ -9,29 +9,24 @@ import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
-import pages.CartPage;
-import pages.CheckoutPage;
-import pages.LoginPage;
-import pages.ProductsPage;
-
+import steps.CartStep;
+import steps.LoginStep;
+import steps.PurchaseStep;
 import java.util.HashMap;
 
 @Listeners({AllureTestNg.class, TestListener.class})
 public class BaseTest {
-
-    WebDriver driver;
-    LoginPage loginPage;
-    ProductsPage productsPage;
-    CartPage cartPage;
-    CheckoutPage checkoutPage;
-
+    protected WebDriver driver;
+    protected LoginStep loginStep;
+    protected CartStep cartStep;
+    protected PurchaseStep purchaseStep;
 
     @Parameters({"browser"})
     @BeforeMethod(
             alwaysRun = true,
             description = "Настройка драйвера"
     )
-    public void setUp(@Optional("chrome") String browser, ITestContext iTestContext) {
+    public void setUp(@Optional("chrome") String browser, ITestContext context) {
         if (browser.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
             HashMap<String, Object> chromePrefs = new HashMap<>();
@@ -42,7 +37,6 @@ public class BaseTest {
             options.addArguments("--disable-notifications");
             options.addArguments("--disable-popup-blocking");
             options.addArguments("--disable-infobars");
-
             driver = new ChromeDriver(options);
             driver.manage().window().maximize();
         } else if (browser.equalsIgnoreCase("firefox")) {
@@ -51,12 +45,12 @@ public class BaseTest {
             driver = new EdgeDriver();
         }
 
-        iTestContext.setAttribute("driver", driver);
+        // Сохраняем драйвер в контекст TestNG, чтобы TestListener мог его безопасно забрать
+        context.setAttribute("driver", driver);
 
-        loginPage = new LoginPage(driver);
-        productsPage = new ProductsPage(driver);
-        cartPage = new CartPage(driver);
-        checkoutPage = new CheckoutPage(driver);
+        loginStep = new LoginStep(driver);
+        cartStep = new CartStep(driver);
+        purchaseStep = new PurchaseStep(driver);
     }
 
     @AfterMethod(

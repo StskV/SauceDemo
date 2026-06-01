@@ -3,45 +3,50 @@ package pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 
 public class CartPage extends BasePage {
 
     private final By CONTINUE_SHOPPING_BUTTON = By.id("continue-shopping");
     private final By CHECKOUT_BUTTON = By.id("checkout");
-    private final String REMOVE_BUTTON_PATTERN =
-            "//*[text()='%s']//ancestor::*[contains(@class,'cart_item')]//button[text()='Remove']";
+    private final String REMOVE_BUTTON_PATTERN = "//*[text()='%s']//ancestor::*[contains(@class,'cart_item')]//button[text()='Remove']";
     private final By PRODUCT_CONTAINER = By.className("cart_item");
-    private final By PRODUCT_NAME = By.className("inventory_item_name");
-    private final By PRODUCT_PRICE = By.className("inventory_item_price");
 
     public CartPage(WebDriver driver) {
         super(driver);
     }
 
-    @Step("Переход на страницу Checkout: Your Information")
-    public void clickCheckout() {
-        driver.findElement(CHECKOUT_BUTTON).click();
+    @Override
+    public CartPage open() {
+        driver.get(BASE_URL + "cart.html");
+        return isPageOpened();
     }
 
-    @Step("Переход на страницу Products")
-    public void clickContinueShopping() {
-        driver.findElement(CONTINUE_SHOPPING_BUTTON).click();
-    }
-
-    @Step("Удаление продукта '{product}' из корзины")
-    public void removeProduct(String product) {
-        driver.findElement(By.xpath(String.format(REMOVE_BUTTON_PATTERN, product))).click();
+    @Override
+    public CartPage isPageOpened() {
+        wait.until(ExpectedConditions.visibilityOfElementLocated(CHECKOUT_BUTTON));
+        return this;
     }
 
     public int getProductsCount() {
         return driver.findElements(PRODUCT_CONTAINER).size();
     }
 
-    public String getProductName() {
-        return driver.findElement(PRODUCT_NAME).getText();
+    @Step("Удаление продукта '{product}' из корзины")
+    public CartPage removeProduct(String product) {
+        click(By.xpath(String.format(REMOVE_BUTTON_PATTERN, product)));
+        return this;
     }
 
-    public String getProductPrice() {
-        return driver.findElement(PRODUCT_PRICE).getText();
+    @Step("Переход на страницу Checkout: Your Information")
+    public CheckoutPage clickCheckout() {
+        click(CHECKOUT_BUTTON);
+        return new CheckoutPage(driver).isPageOpened();
+    }
+
+    @Step("Переход на страницу Products")
+    public ProductsPage clickContinueShopping() {
+        click(CONTINUE_SHOPPING_BUTTON);
+        return new ProductsPage(driver).isPageOpened();
     }
 }

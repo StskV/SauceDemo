@@ -3,42 +3,55 @@ package pages;
 import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class ProductsPage extends BasePage {
 
-    private final By TITLE = By.cssSelector("[data-test = title]");
-    private final By CART = By.cssSelector("[data-test = shopping-cart-link]");
-    private final By CART_BADGE = By.cssSelector("[data-test = shopping-cart-badge]");
-    private final String ADD_TO_CART_PATTERN =
-            "//*[text()='%s']//ancestor::div[@class='inventory_item']//button[text()='Add to cart']";
-    private final String REMOVE_FROM_CART_PATTERN =
-            "//*[text()='%s']//ancestor::div[@class='inventory_item']//button[text()='Remove']";
-    private final String PRODUCT_CONTAINER =
-            "//*[text()='%s']/ancestor::div[@class='inventory_item']";
-    private final By PRODUCT_PRICE = By.className("inventory_item_price");
+    private final By TITLE = By.cssSelector("[data-test='title']");
+    private final By CART = By.cssSelector("[data-test='shopping-cart-link']");
+    private final By CART_BADGE = By.cssSelector("[data-test='shopping-cart-badge']");
+    private final String ADD_TO_CART_PATTERN = "//*[text()='%s']//ancestor::div[@class='inventory_item']//button[text()='Add to cart']";
+    private final String REMOVE_FROM_CART_PATTERN = "//*[text()='%s']//ancestor::div[@class='inventory_item']//button[text()='Remove']";
 
     public ProductsPage(WebDriver driver) {
         super(driver);
     }
 
-    public String getTitle() {
-        return driver.findElement(TITLE).getText();
+    @Override
+    public ProductsPage open() {
+        driver.get(BASE_URL + "inventory.html");
+        return isPageOpened();
+    }
+
+    @Override
+    public ProductsPage isPageOpened() {
+        waitVisible(TITLE);
+        return this;
+    }
+
+    private By addToCartButton(String product) {
+        return By.xpath(String.format(ADD_TO_CART_PATTERN, product));
+    }
+
+    private By removeButton(String product) {
+        return By.xpath(String.format(REMOVE_FROM_CART_PATTERN, product));
     }
 
     @Step("Добавление в корзину товара с именем: '{product}'")
-    public void addToCart(String product) {
-        driver.findElement(By.xpath(String.format(ADD_TO_CART_PATTERN, product))).click();
+    public ProductsPage addToCart(String product) {
+        click(addToCartButton(product));
+        return this;
     }
 
     @Step("Удаление из корзины товара с именем '{product}'")
-    public void removeFromCart(String product) {
-        driver.findElement(By.xpath(String.format(REMOVE_FROM_CART_PATTERN, product))).click();
+    public ProductsPage removeFromCart(String product) {
+        click(removeButton(product));
+        return this;
     }
 
     @Step("Переход на страницу корзины")
-    public void clickCart() {
-        driver.findElement(CART).click();
+    public CartPage clickCart() {
+        click(CART);
+        return new CartPage(driver).isPageOpened();
     }
 
     public boolean isCartBadgeDisplayed() {
@@ -46,11 +59,10 @@ public class ProductsPage extends BasePage {
     }
 
     public String getCartBadgeCount() {
-        return driver.findElement(CART_BADGE).getText();
+        return waitVisible(CART_BADGE).getText();
     }
 
-    public String getProductPrice(String productName) {
-        WebElement product = driver.findElement(By.xpath(String.format(PRODUCT_CONTAINER, productName)));
-        return product.findElement(PRODUCT_PRICE).getText();
+    public String getTitle() {
+        return waitVisible(TITLE).getText();
     }
 }
