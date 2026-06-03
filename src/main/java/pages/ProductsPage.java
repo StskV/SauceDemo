@@ -1,9 +1,11 @@
 package pages;
 
 import io.qameta.allure.Step;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+@Log4j2
 public class ProductsPage extends BasePage {
 
     private final By TITLE = By.cssSelector("[data-test='title']");
@@ -18,6 +20,7 @@ public class ProductsPage extends BasePage {
 
     @Override
     public ProductsPage open() {
+        log.info("Открытие страницы Products Page");
         driver.get(BASE_URL + "inventory.html");
         return isPageOpened();
     }
@@ -38,18 +41,21 @@ public class ProductsPage extends BasePage {
 
     @Step("Добавление в корзину товара с именем: '{product}'")
     public ProductsPage addToCart(String product) {
+        log.info("Добавление товара '{}' в корзину со страницы Products:", product);
         click(addToCartButton(product));
         return this;
     }
 
     @Step("Удаление из корзины товара с именем '{product}'")
     public ProductsPage removeFromCart(String product) {
+        log.info("Удаление товара '{}' из корзины со страницы Products", product);
         click(removeButton(product));
         return this;
     }
 
     @Step("Переход на страницу корзины")
     public CartPage clickCart() {
+        log.info("Нажатие на кнопку корзины со страницы Products");
         click(CART);
         return new CartPage(driver).isPageOpened();
     }
