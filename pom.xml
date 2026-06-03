@@ -15,7 +15,7 @@
         <selenium.version>4.44.0</selenium.version>
         <testng.version>7.12.0</testng.version>
         <asserj.version>3.27.7</asserj.version>
-        <suiteXmlFile>src/test/resources/CrossBrowser.xml</suiteXmlFile>
+        <suiteXmlFile>src/test/resources/crossBrowser.xml</suiteXmlFile>
         <allure.version>2.24.0</allure.version>
         <aspectj.version>1.9.20.1</aspectj.version>
     </properties>
