@@ -22,6 +22,8 @@ public class BaseTest {
     protected LoginStep loginStep;
     protected CartStep cartStep;
     protected PurchaseStep purchaseStep;
+    protected String user = System.getProperty("user");
+    protected String password = System.getProperty("password");
 
     @Parameters({"browser"})
     @BeforeMethod(
