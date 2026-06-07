@@ -8,7 +8,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 @Log4j2
 public class CartPage extends BasePage {
-
     private final By CONTINUE_SHOPPING_BUTTON = By.id("continue-shopping");
     private final By CHECKOUT_BUTTON = By.id("checkout");
     private final String REMOVE_BUTTON_PATTERN = "//*[text()='%s']//ancestor::*[contains(@class,'cart_item')]//button[text()='Remove']";
@@ -19,6 +18,7 @@ public class CartPage extends BasePage {
     }
 
     @Override
+    @Step("Открытие страницы Cart Page")
     public CartPage open() {
         log.info("Открытие страницы Cart Page");
         driver.get(BASE_URL + "cart.html");
@@ -38,20 +38,22 @@ public class CartPage extends BasePage {
     @Step("Удаление продукта '{product}' из корзины")
     public CartPage removeProduct(String product) {
         log.info("Удаление продукта '{}' из корзины", product);
-        click(By.xpath(String.format(REMOVE_BUTTON_PATTERN, product)));
+        By removeButton = By.xpath(String.format(REMOVE_BUTTON_PATTERN, product));
+        click(removeButton);
+        wait.until(ExpectedConditions.invisibilityOfElementLocated(removeButton));
         return this;
     }
 
     @Step("Переход на страницу Checkout: Your Information")
     public CheckoutPage clickCheckout() {
-        log.info("Переход на страницу Checkout: Your Information со страницы Cart Page");
+        log.info("Переход на страницу Checkout: Your Information");
         click(CHECKOUT_BUTTON);
         return new CheckoutPage(driver).isPageOpened();
     }
 
-    @Step("Переход на страницу Products")
+    @Step("Нажатие на кнопку 'Continue Shopping'")
     public ProductsPage clickContinueShopping() {
-        log.info("Возвращение на Products Page со страницы Checkout");
+        log.info("Нажатие на кнопку 'Continue Shopping'");
         click(CONTINUE_SHOPPING_BUTTON);
         return new ProductsPage(driver).isPageOpened();
     }

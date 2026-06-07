@@ -1,21 +1,24 @@
 package steps;
 
 import dto.Customer;
+import io.qameta.allure.Step;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.openqa.selenium.WebDriver;
 import pages.CheckoutPage;
-import pages.LoginPage;
+import pages.ProductsPage;
 
+@Log4j2
+@RequiredArgsConstructor
 public class PurchaseStep {
     private final WebDriver driver;
 
-    public PurchaseStep(WebDriver driver) {
-        this.driver = driver;
-    }
-
+    @Step("Покупка товара '{product}'")
     public CheckoutPage buyProduct(String product, Customer customer) {
-        return new LoginPage(driver)
+        log.info("Покупка товара '{}'", product);
+        return new ProductsPage(driver)
                 .open()
-                .loginWithValidCreds("standard_user", "secret_sauce")
+                .isPageOpened()
                 .addToCart(product)
                 .clickCart()
                 .clickCheckout()

@@ -27,10 +27,12 @@ public class LoginTest extends BaseTest {
     @TmsLink("SD-T01")
     @Issue("BUG-01")
     public void checkLoginWithPositiveCred() {
-        ProductsPage productsPage = loginStep.loginAsStandardUser();
+        LoginPage loginPage = new LoginPage(driver);
+        ProductsPage productsPage = loginPage.open()
+                        .loginWithValidCreds(user, password);
         assertEquals(productsPage.getTitle(),
                 "Products",
-                "Login failed"
+                "Check login with positive creds failed"
         );
     }
 

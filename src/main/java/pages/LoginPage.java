@@ -11,49 +11,52 @@ public class LoginPage extends BasePage {
     private final By USERNAME_FIELD = By.id("user-name");
     private final By PASSWORD_FIELD = By.id("password");
     private final By LOGIN_BUTTON = By.id("login-button");
-    private final By ERROR_MESSAGE = By.cssSelector("[data-test=error]");
+    private final By ERROR_MESSAGE = By.cssSelector("[data-test='error']");
 
     public LoginPage(WebDriver driver) {
         super(driver);
     }
 
-    @Step("Открытие страницы LoginPage")
+    @Step("Открытие страницы Login Page")
     @Override
     public LoginPage open() {
-        log.info("Открытие страницы Login Page с URL: {}", BASE_URL);
+        log.info("Открытие страницы Login Page");
         driver.get(BASE_URL);
         return isPageOpened();
     }
 
     @Override
     public LoginPage isPageOpened() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(LOGIN_BUTTON));
-        return this;
+        try {
+            wait.until(ExpectedConditions.visibilityOfElementLocated(LOGIN_BUTTON));
+            return this;
+        } catch (Exception e) {
+            log.error("Login page not loaded", e);
+            throw new IllegalStateException("Login page not loaded", e);
+        }
     }
 
-    private void enterCredentials(String user, String pass) {
+    private void enterCredentials(String user, String password) {
         type(USERNAME_FIELD, user);
-        type(PASSWORD_FIELD, pass);
+        type(PASSWORD_FIELD, password);
         click(LOGIN_BUTTON);
     }
 
-    @Step("Вход в систему с валидными кредами: логин '{user}', пароль '{password}'")
+    @Step("Успешная авторизация пользователя '{username}'")
     public ProductsPage loginWithValidCreds(String user, String password) {
-        log.info("логин с валидными данными пользователя: логин '{}', пароль '{}'", user, password);
+        log.info("Успешная авторизация пользователя '{}'", user);
         enterCredentials(user, password);
         return new ProductsPage(driver).isPageOpened();
     }
 
-    @Step("Вход в систему с невалидными кредами: логин '{user}', пароль '{pass}'")
+    @Step("Неуспешная авторизация пользователя '{username}'")
     public LoginPage loginWithInvalidCreds(String user, String password) {
-        log.info("логин с невалидными данными пользователя: логин '{}', пароль '{}'", user, password);
+        log.info("Неуспешная авторизация пользователя '{}'", user);
         enterCredentials(user, password);
         return this;
     }
 
     public String getErrorMessage() {
-        String error = waitVisible(ERROR_MESSAGE).getText();
-        log.info("Получен текст ошибки на Login Page: '{}'", error);
-        return error;
+        return waitVisible(ERROR_MESSAGE).getText();
     }
 }

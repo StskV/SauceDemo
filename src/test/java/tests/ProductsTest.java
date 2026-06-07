@@ -2,11 +2,14 @@ package tests;
 
 import io.qameta.allure.*;
 import org.testng.annotations.Test;
+import pages.LoginPage;
 import pages.ProductsPage;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 
+@Epic("Sauce Demo 1")
+@Feature("Products")
 public class ProductsTest extends BaseTest {
 
     @Test(
@@ -15,13 +18,13 @@ public class ProductsTest extends BaseTest {
             groups = "smoke"
     )
     @Owner("Satsiuk Viktoriya")
-    @Epic("Sauce Demo 1")
-    @Feature("Products")
     @Story("Adding products")
     @Severity(SeverityLevel.CRITICAL)
     public void checkAddProductFromProductsPage() {
-        ProductsPage productsPage = loginStep.loginAsStandardUser()
-                .addToCart("Sauce Labs Backpack");
+        ProductsPage productsPage = new LoginPage(driver)
+                .open()
+                .loginWithValidCreds(user, password);
+        productsPage.addToCart("Sauce Labs Backpack");
         assertEquals(
                 productsPage.getCartBadgeCount(),
                 "1",
@@ -35,12 +38,12 @@ public class ProductsTest extends BaseTest {
             groups = "smoke"
     )
     @Owner("Satsiuk Viktoriya")
-    @Epic("Sauce Demo 1")
-    @Feature("Products")
     @Story("Remove products")
     @Severity(SeverityLevel.CRITICAL)
     public void checkRemoveProductFromProductsPage() {
-        ProductsPage productsPage = loginStep.loginAsStandardUser()
+        ProductsPage productsPage = new LoginPage(driver)
+                .open()
+                .loginWithValidCreds(user, password)
                 .addToCart("Sauce Labs Bike Light")
                 .removeFromCart("Sauce Labs Bike Light");
         assertFalse(

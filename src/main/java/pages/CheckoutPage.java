@@ -9,7 +9,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 
 @Log4j2
 public class CheckoutPage extends BasePage {
-
     private final By FIRST_NAME_FIELD = By.id("first-name");
     private final By LAST_NAME_FIELD = By.id("last-name");
     private final By ZIP_FIELD = By.id("postal-code");
@@ -24,6 +23,7 @@ public class CheckoutPage extends BasePage {
     }
 
     @Override
+    @Step("Открытие страницы Checkout Page")
     public CheckoutPage open() {
         log.info("Открытие страницы Checkout Page");
         driver.get(BASE_URL + "checkout-step-one.html");
@@ -45,17 +45,18 @@ public class CheckoutPage extends BasePage {
         return this;
     }
 
-    @Step("Переход на страницу 'Checkout: Overview'")
+    @Step("Нажатие на кнопку 'Continue'")
     public CheckoutPage clickContinue() {
-        log.info("Переход на страницу 'Checkout: Overview");
+        log.info("Нажатие на кнопку 'Continue'");
         click(CONTINUE_BUTTON);
         return this;
     }
 
-    @Step("Переход на страницу Checkout: Complete!")
+    @Step("Завершение заказа кнопкой 'Finish' и переход на страницу Checkout: Complete!")
     public CheckoutPage clickFinish() {
-        log.info("Переход на страницу Checkout: Complete!");
+        log.info("Завершение заказа кнопкой 'Finish' и переход на страницу Checkout: Complete!");
         click(FINISH_BUTTON);
+        waitVisible(SUCCESS_ORDER_MESSAGE);
         return this;
     }
 

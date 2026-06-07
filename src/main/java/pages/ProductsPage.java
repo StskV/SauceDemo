@@ -7,7 +7,6 @@ import org.openqa.selenium.WebDriver;
 
 @Log4j2
 public class ProductsPage extends BasePage {
-
     private final By TITLE = By.cssSelector("[data-test='title']");
     private final By CART = By.cssSelector("[data-test='shopping-cart-link']");
     private final By CART_BADGE = By.cssSelector("[data-test='shopping-cart-badge']");
@@ -19,6 +18,7 @@ public class ProductsPage extends BasePage {
     }
 
     @Override
+    @Step("Открытие страницы Products page")
     public ProductsPage open() {
         log.info("Открытие страницы Products Page");
         driver.get(BASE_URL + "inventory.html");
@@ -41,21 +41,21 @@ public class ProductsPage extends BasePage {
 
     @Step("Добавление в корзину товара с именем: '{product}'")
     public ProductsPage addToCart(String product) {
-        log.info("Добавление товара '{}' в корзину со страницы Products:", product);
+        log.info("Добавление товара '{}' в корзину", product);
         click(addToCartButton(product));
         return this;
     }
 
-    @Step("Удаление из корзины товара с именем '{product}'")
+    @Step("Удаление товара '{product}' из корзины")
     public ProductsPage removeFromCart(String product) {
-        log.info("Удаление товара '{}' из корзины со страницы Products", product);
+        log.info("Удаление товара '{}' из корзины", product);
         click(removeButton(product));
         return this;
     }
 
     @Step("Переход на страницу корзины")
     public CartPage clickCart() {
-        log.info("Нажатие на кнопку корзины со страницы Products");
+        log.info("Нажатие на кнопку корзины");
         click(CART);
         return new CartPage(driver).isPageOpened();
     }

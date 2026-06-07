@@ -12,18 +12,17 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 import steps.CartStep;
-import steps.LoginStep;
 import steps.PurchaseStep;
+import utils.PropertyReader;
 import java.util.HashMap;
 
 @Listeners({AllureTestNg.class, TestListener.class})
 public class BaseTest {
     protected WebDriver driver;
-    protected LoginStep loginStep;
     protected CartStep cartStep;
     protected PurchaseStep purchaseStep;
-    protected String user = System.getProperty("user");
-    protected String password = System.getProperty("password");
+    protected String user = System.getProperty("user", PropertyReader.getProperty("user"));
+    protected String password = System.getProperty("password", PropertyReader.getProperty("password"));
 
     @Parameters({"browser"})
     @BeforeMethod(
@@ -56,7 +55,6 @@ public class BaseTest {
 
         context.setAttribute("driver", driver);
 
-        loginStep = new LoginStep(driver);
         cartStep = new CartStep(driver);
         purchaseStep = new PurchaseStep(driver);
     }

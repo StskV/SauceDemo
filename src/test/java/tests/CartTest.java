@@ -4,6 +4,7 @@ import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.CartPage;
+import pages.LoginPage;
 import pages.ProductsPage;
 
 import static org.testng.Assert.assertEquals;
@@ -21,9 +22,14 @@ public class CartTest extends BaseTest {
     @Story("Empty cart")
     @Severity(SeverityLevel.NORMAL)
     public void checkEmptyCart() {
-        ProductsPage products = loginStep.loginAsStandardUser();
+        LoginPage loginPage = new LoginPage(driver);
+        ProductsPage products = loginPage.open()
+                        .loginWithValidCreds(user, password);
         CartPage cart = products.clickCart();
-        assertEquals(cart.getProductsCount(), 0, "Empty cart test failed");
+        assertEquals(cart.getProductsCount(),
+                0,
+                "Empty cart test failed"
+        );
     }
 
     @Test(
@@ -38,16 +44,24 @@ public class CartTest extends BaseTest {
     @Severity(SeverityLevel.NORMAL)
     public void checkAddTwoProductsToCart() {
         SoftAssert softAssert = new SoftAssert();
-        ProductsPage products = loginStep.loginAsStandardUser();
+        LoginPage loginPage = new LoginPage(driver);
+        ProductsPage products = loginPage.open()
+                        .loginWithValidCreds(user, password);
         CartPage cart = products
                 .addToCart("Sauce Labs Bolt T-Shirt")
                 .clickCart();
-        softAssert.assertEquals(cart.getProductsCount(), 1, "Adding 1 product test failed");
-        cart = cart
-                .clickContinueShopping()
+        softAssert.assertEquals(cart.getProductsCount(),
+                1,
+                "Adding 1 product test failed"
+        );
+        cart.clickContinueShopping();
+        products
                 .addToCart("Sauce Labs Onesie")
                 .clickCart();
-        softAssert.assertEquals(cart.getProductsCount(), 2, "Adding 2 products test failed");
+        softAssert.assertEquals(cart.getProductsCount(),
+                2,
+                "Adding 2 products test failed"
+        );
         softAssert.assertAll();
     }
 
@@ -62,12 +76,18 @@ public class CartTest extends BaseTest {
     @Story("Remove products from cart")
     @Severity(SeverityLevel.CRITICAL)
     public void checkRemoveProductsFromCart() {
+        new LoginPage(driver)
+                .open()
+                .loginWithValidCreds(user, password);
         CartPage cart = cartStep.addProductsToCart(
                         "Sauce Labs Backpack",
                         "Test.allTheThings() T-Shirt (Red)"
                 )
                 .removeProduct("Sauce Labs Backpack")
                 .removeProduct("Test.allTheThings() T-Shirt (Red)");
-        assertEquals(cart.getProductsCount(), 0, "Remove products from cart test failed");
+        assertEquals(cart.getProductsCount(),
+                0,
+                "Remove products from cart test failed"
+        );
     }
 }

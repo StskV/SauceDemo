@@ -5,6 +5,7 @@ import io.qameta.allure.*;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.CheckoutPage;
+import pages.LoginPage;
 
 public class EndToEndTest extends BaseTest {
 
@@ -24,15 +25,24 @@ public class EndToEndTest extends BaseTest {
     @Severity(SeverityLevel.CRITICAL)
     public void checkSuccessfulFullPurchaseFlow() {
         SoftAssert softAssert = new SoftAssert();
+        LoginPage loginPage = new LoginPage(driver);
         Customer customer = Customer.builder()
                 .firstName("John")
                 .lastName("Smith")
                 .zipCode("12345")
                 .build();
+        loginPage.open()
+                .loginWithValidCreds(user, password);
         CheckoutPage checkoutPage = purchaseStep.buyProduct(PRODUCT_NAME, customer);
-        softAssert.assertEquals(checkoutPage.getProductName(), PRODUCT_NAME, "Product name does not match on Checkout page");
+        softAssert.assertEquals(checkoutPage.getProductName(),
+                PRODUCT_NAME,
+                "Product name does not match on Checkout page"
+        );
         checkoutPage.clickFinish();
-        softAssert.assertEquals(checkoutPage.getSuccessOrderMessage(), EXPECTED_MESSAGE, "End to end test failed");
+        softAssert.assertEquals(checkoutPage.getSuccessOrderMessage(),
+                EXPECTED_MESSAGE,
+                "End to end test failed"
+        );
         softAssert.assertAll();
     }
 }
