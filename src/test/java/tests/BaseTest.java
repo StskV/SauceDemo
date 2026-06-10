@@ -51,17 +51,17 @@ public class BaseTest {
         } else if (browser.equalsIgnoreCase("firefox")) {
             FirefoxOptions options = new FirefoxOptions();
             options.addArguments("--headless");
-            driver = new FirefoxDriver(options);
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--disable-gpu");
+            driver = new FirefoxDriver(options);
         } else if (browser.equalsIgnoreCase("edge")) {
             EdgeOptions options = new EdgeOptions();
             options.addArguments("--headless");
-            driver = new EdgeDriver(options);
             options.addArguments("--no-sandbox");
             options.addArguments("--disable-dev-shm-usage");
             options.addArguments("--disable-gpu");
+            driver = new EdgeDriver(options);
         }
 
         context.setAttribute("driver", driver);
